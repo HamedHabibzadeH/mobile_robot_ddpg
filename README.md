@@ -1,47 +1,26 @@
-# Mobile Robot Path Finding with DDPG (Gymnasium + SB3)
+This repository contains the full code for a mobile robot navigation environment with LiDAR and training using DDPG.
 
-این ریپو شامل کد کامل محیط ناوبری ربات سیار با LiDAR و آموزش با DDPG است.
+## Quick Installation
 
-## نصب سریع
-
-> Python 3.9–3.11 پیشنهاد می‌شود.
+Python 3.9–3.11 is recommended.
 
 ```bash
-# (اختیاری) ساخت venv
+# (Optional) create a virtual environment
 python -m venv .venv
+
 # Linux/macOS
 source .venv/bin/activate
+
 # Windows PowerShell
 # .venv\Scripts\Activate.ps1
 
-# به‌روزرسانی ابزارهای نصب
+# Upgrade packaging tools
 python -m pip install --upgrade pip setuptools wheel
 
-# نصب پیش‌نیازها
+# Install dependencies
 pip install -r requirements.txt
 
-# نصب PyTorch (بر اساس سیستم خودتان)
-# فقط CPU:
+# Install PyTorch (depending on your system)
+# CPU only:
 pip install torch --index-url https://download.pytorch.org/whl/cpu
-# یا طبق CUDA: https://pytorch.org/get-started/locally/
-```
-
-## آموزش
-
-```bash
-python train_ddpg.py --logdir runs_ddpg --n_envs 1
-```
-
-## اجرای دمو / ارزیابی
-
-```bash
-python evaluate.py --model runs_ddpg/best_model.zip --episodes 5 --deterministic --sleep 0.02
-```
-
-## نکات
-
-- اگر روی سرور بدون نمایشگر اجرا می‌کنید، `render()` ممکن است باز نشود. می‌توانید `--sleep 0` بزنید و از لاگ‌ها استفاده کنید، یا از بک‌اند غیرتعامل `Agg` استفاده کنید:
-  ```bash
-  MPLBACKEND=Agg python evaluate.py --model runs_ddpg/best_model.zip
-  ```
-- برای سرعت بیشتر، `LIDAR_N_RAYS` یا `TOTAL_TIMESTEPS` را کم کنید.
+# or follow the CUDA-specific instructions: https://pytorch.org/get-started/locally/
