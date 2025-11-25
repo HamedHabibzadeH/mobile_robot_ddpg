@@ -1,0 +1,37 @@
+# -*- coding: utf-8 -*-
+import time
+from stable_baselines3 import DDPG
+
+import config as cfg
+from envs.mobile_robot_env import make_env_from_config
+
+def test_model(model_path="logs_ddpg/best_model.zip", episodes=3, deterministic=True, sleep=0.02):
+    # ساخت محیط جدید (موانع تصادفی)
+    env = make_env_from_config(cfg)
+
+    # بارگذاری مدل آموزش دیده
+    model = DDPG.load(model_path)
+
+    for ep in range(episodes):
+        obs, info = env.reset()   # محیط جدید با چیدمان متفاوت موانع
+        ep_reward = 0
+        for step in range(cfg.MAX_STEPS):
+            # پیش‌بینی اکشن از روی سیاست یادگرفته‌شده
+            action, _ = model.predict(obs, deterministic=deterministic)
+            obs, reward, terminated, truncated, info = env.step(action)
+            ep_reward += reward
+
+            # رندر محیط
+            env.render()
+            if sleep > 0:
+                time.sleep(sleep)
+
+            if terminated or truncated:
+                print(f"Episode {ep+1} ended. Success={info.get('is_success', False)}, Reward={ep_reward:.2f}")
+                break
+
+    env.close()
+
+
+if __name__ == "__main__":
+    test_model("logs_ddpg/best_model.zip", episodes=5, deterministic=True, sleep=0.02)
